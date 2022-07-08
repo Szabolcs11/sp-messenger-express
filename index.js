@@ -41,7 +41,7 @@ input MessageInput {
 }
 
 type Mutation {
-    createMessage(input: MessageInput): MessageResponse
+    createMessage(input: MessageInput!): MessageResponse
 }
 `
 const resolvers = {
@@ -70,13 +70,12 @@ const resolvers = {
 
     Mutation: {
         createMessage: async (root, args, context, info) => {
-            await axios.post(strapiurl + '/api/messages', {
-              "message": args.input.messages,
-              "sender": args.input.sender
-            }).then(res => {
-              console.log(res.data)
-            })
-            return {id: 1, message: "ASD", date: "2022-07-08 14:01", sender: {username: "Szabolcs", id: 2}}
+          const { data } = await axios.post(strapiurl + '/api/messages', {data:{
+              "Message": args.input.message,
+              "sender": Number(args.input.sender)
+            }})
+            console.log(data, args.input)
+          return data.data;
         }
     },
 
