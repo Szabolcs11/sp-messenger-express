@@ -15,6 +15,10 @@ module.exports = gql`
         sender: User 
     }
 
+    type Rooms {
+        id: String
+    }
+
 
     input MessageInput {
         message: String
@@ -25,9 +29,9 @@ module.exports = gql`
 
     type Query {
 
-        messages(user_id: ID!): [MessageResponse]
+        messages(room_id: ID!): [MessageResponse]
 
-        getrooms(user_id: ID!): [String]
+        getrooms(user_id: ID!): [Rooms]
     }
 
     type Mutation {
@@ -36,7 +40,7 @@ module.exports = gql`
 
 
     type Subscription {
-        messagesent: MessageResponse
+        messagesent(room_id: ID!): MessageResponse
     }
 
 `
