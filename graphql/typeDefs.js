@@ -12,7 +12,8 @@ module.exports = gql`
         message: String
         date: String
         roomkey: String
-        sender: User 
+        imageurl: [String]
+        sender: User
     }
 
     type Rooms {
@@ -25,6 +26,7 @@ module.exports = gql`
         sender: ID
         sendername: String
         roomkey: String
+        image: [ID]
     }
 
     type Query {
@@ -36,6 +38,8 @@ module.exports = gql`
 
     type Mutation {
         createMessage(input: MessageInput!): MessageResponse
+
+        setAvatar(imgid: ID!): String
     }
 
 
@@ -44,6 +48,60 @@ module.exports = gql`
     }
 
 `
+
+
+// Megjelenites DONE 
+// Mire kellene atirni az IDt a MessageInput ba.
+// Hogy "insertelek" 2 adatot az uzenetekbe, hogy irok be 2 ID-t
+
+
+
+// module.exports = gql`
+
+//     type User {
+//         username: String
+//         id: ID
+//     }
+
+//     type MessageResponse {
+//         id: ID
+//         message: String
+//         date: String
+//         roomkey: String
+//         sender: User 
+//     }
+
+//     type Rooms {
+//         id: String
+//     }
+
+
+//     input MessageInput {
+//         message: String
+//         sender: ID
+//         sendername: String
+//         roomkey: String
+//     }
+
+//     type Query {
+
+//         messages(room_id: ID!): [MessageResponse]
+
+//         getrooms(user_id: ID!): [Rooms]
+//     }
+
+//     type Mutation {
+//         createMessage(input: MessageInput!): MessageResponse
+//     }
+
+
+//     type Subscription {
+//         messagesent(room_id: ID!): MessageResponse
+//     }
+
+// `
+
+
 
 
 // const { gql } = require("apollo-server")
