@@ -101,6 +101,7 @@ module.exports = {
             // console.log("---")
             // console.log(data.data[0])
             return array;
+            // return [[{id: "a"}], [{id: "a"}]]
         },
 
         messages: async (root, args, context, info) => {
@@ -108,12 +109,14 @@ module.exports = {
             // console.log(args)
             // /api/messages?populate=Image&populate=sender&filters[$and][0][sender][id][$eq]=
             // const {data} = await axios.get(strapiurl + '/api/messages?populate=sender&filters[$and][0][RoomKey][$eq]=' + args.room_id)
-            const {data} = await axios.get(strapiurl + '/api/messages?populate=Image&populate=sender&page?limit=500&filters[$and][0][RoomKey][$eq]=' + args.room_id)
+            // const {data} = await axios.get(strapiurl + '/api/messages?populate=Image&populate=sender&filters[$and][0][RoomKey][$eq]=' + args.room_id)
+            const {data} = await axios.get(strapiurl + '/api/messages?populate=Image&populate=sender.Avatar&filters[$and][0][RoomKey][$eq]=' + args.room_id)
             // console.log(data)
             let retundata = []
             data.data.forEach(e => {
                 let url = undefined
-
+                // console.log(e.attributes.sender.data.attributes.Avatar.data.attributes.url)
+                let avaturl = e.attributes.sender.data.attributes.Avatar.data.attributes.url
                 // console.log(e.attributes.Image.data[0])
 
                 // if (e.attributes.Image.data) { 
@@ -139,7 +142,7 @@ module.exports = {
                         // console.log("----")
                     }
                 }
-                retundata.push({id: e.id, message: e.attributes.Message, roomkey: e.attributes.RoomKey, date: e.attributes.createdAt, imageurl: imageurls, sender: {username: e.attributes.sender.data.attributes.username, id: e.attributes.sender.data.id}})
+                retundata.push({id: e.id, message: e.attributes.Message, roomkey: e.attributes.RoomKey, date: e.attributes.createdAt, imageurl: imageurls, sender: {username: e.attributes.sender.data.attributes.username, id: e.attributes.sender.data.id, avatarurl: avaturl}})
                 // retundata.push({id: e.id, message: e.attributes.Message, roomkey: e.attributes.RoomKey, date: e.attributes.createdAt, imageurl: url, sender: {username: e.attributes.sender.data.attributes.username, id: e.attributes.sender.data.id}})
                 // retundata.push({id: e.id, message: e.attributes.Message, roomkey: e.attributes.RoomKey, date: e.attributes.createdAt, imageurl: e.attributes.Image.data[0].attributes.url, sender: {username: e.attributes.sender.data.attributes.username, id: e.attributes.sender.data.id}})
             });
@@ -147,6 +150,17 @@ module.exports = {
             // console.log(retundata)
             return retundata
             // return [{id: 1, message: "TEXT", date:"2022-02-22", sender: {username: "asd", id: 1}}]
+        },
+
+        getusers: async (root, args, context, info) => {
+            const data = await axios.get(strapiurl + "/api/users?populate=Avatar")
+            let returndata = []
+            data.data.map((d) => {
+                if (args.myid != d.id) {
+                    returndata.push({id: d.id, username: d.username, avatarurl: d.Avatar.url})
+                }
+            })
+            return returndata
         },
     }
 }

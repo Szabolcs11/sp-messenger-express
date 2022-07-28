@@ -5,6 +5,7 @@ module.exports = gql`
     type User {
         username: String
         id: ID
+        avatarurl: String
     }
 
     type MessageResponse {
@@ -34,6 +35,8 @@ module.exports = gql`
         messages(room_id: ID!): [MessageResponse]
 
         getrooms(user_id: ID!): [Rooms]
+
+        getusers(myid: ID!): [User]
     }
 
     type Mutation {
