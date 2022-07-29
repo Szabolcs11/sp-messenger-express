@@ -156,10 +156,12 @@ module.exports = {
             const data = await axios.get(strapiurl + "/api/users?populate=Avatar")
             let returndata = []
             data.data.map((d) => {
+                // console.log(d)
                 if (args.myid != d.id) {
                     returndata.push({id: d.id, username: d.username, avatarurl: d.Avatar.url})
                 }
             })
+            // console.log(returndata)
             return returndata
         },
     }
