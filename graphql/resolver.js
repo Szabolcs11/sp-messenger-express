@@ -161,7 +161,7 @@ module.exports = {
                     returndata.push({id: d.id, username: d.username, avatarurl: d.Avatar.url})
                 }
             })
-            // console.log(returndata)
+            console.log(returndata)
             return returndata
         },
     }
